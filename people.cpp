@@ -13,7 +13,7 @@ struct PERSON{
 int lines();
 void Display(PERSON a[], int size);
 void FindRichest(PERSON a[], int size);
-void Deposit(string customer,PERSON myarray[],int size);
+void Deposit(string customer,PERSON a[],int size);
 void NewCopy(string file,PERSON a[], int size);
 
 int main(){
@@ -84,30 +84,29 @@ void FindRichest(PERSON a[], int size){
   cout << "The customer maximum balance is " << a[rich].cName << endl;
 }
 
-void Deposit(string customer,PERSON myarray[],int size){
+void Deposit(string customer,PERSON a[],int size){
   PERSON person[1];
   float deposit;
   int k = 0;
   
   strcpy(person[0].cName,customer.c_str());
   
-  cout << customer << ", how much would you like to deposit? ";
+  cout << person[0].cName << ", how much would you like to deposit? ";
   cin >> deposit;
   person[0].Balance =  deposit;
   
   for(; k < size; ++k){
-    if(person[0].cName == myarray[k].cName){
+    if(person[0].cName == a[k].cName){
       break;
     }
   }
 
-  myarray[k].Balance +=  person[0].Balance;
-  cout << "Now your new balance is " << myarray[k].Balance <<  endl;
+  a[k].Balance +=  person[0].Balance;
+  cout << "Now your new balance is " << a[k].Balance <<  endl;
 }
 
 void NewCopy(string file, PERSON a[], int size){
-  ofstream myfile;
-  myfile.open(file);
+  fstream myfile{file,myfile.out|myfile.app};
   for(int i = 0; i < size; i++){
 	myfile << a[i].cName << " " << a[i].Balance << "\n";
   }
