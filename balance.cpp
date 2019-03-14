@@ -106,7 +106,8 @@ void Deposit(string customer,PERSON a[],int size){
 }
 
 void NewCopy(string file, PERSON a[], int size){
-  fstream myfile{file,myfile.out|myfile.app};
+  ofstream myfile;
+  myfile.open(file);
   for(int i = 0; i < size; i++){
 	myfile << a[i].cName << " " << a[i].Balance << "\n";
   }
