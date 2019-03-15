@@ -1,3 +1,5 @@
+// Karina Rios
+// 301-3
 #include<iostream>
 #include<string>
 #include<cstring>
@@ -11,44 +13,57 @@ struct PERSON{
 };
   
 int lines();
+PERSON* readData(int N);
 void Display(PERSON a[], int size);
 void FindRichest(PERSON a[], int size);
-void Deposit(string customer,PERSON a[],int size);
+void Deposit(PERSON arr[],int N,string custName,float amount);
 void NewCopy(string file,PERSON a[], int size);
+string userName();
+float Amount(PERSON a[],int N,string name);
 
 int main(){
- int  N = lines();
- PERSON people[N];
+  int size = lines();
+  PERSON* people = readData(size);
 
- string str1;
- string str2;
- string garabadge;
- float pay;
+  Display(people,size);
+  FindRichest(people,size);
 
- ifstream Data;
- Data.open("data.txt");
- for(int i = 0; i < N; ++i){
-   Data >> str1 >> str2 >> pay;
-   getline(Data,garabadge);
-   string name = str1 + " " + str2;
-   strcpy(people[i].cName,name.c_str());
-   people[i].Balance = pay;
- }
-
- Data.close();
-
- Display(people,N);
- FindRichest(people,N);
-
- string CustName;
- cout << "Enter your full name to deposit: ";
- getline(cin,CustName);
- 
- Deposit(CustName,people,N);
- NewCopy("data.txt",people,N);
+  string cust = userName();
+  float amount = Amount(cust);
+  Deposit(people,size,cust,amount);
+  
+  string name = userName();
+  float money = Amount(name);
+  Deposit(people,size,name,money);
+  
+  FindRichest(people,size);
+  NewCopy("data.txt",people,N);
 
  return 0;
 }
+
+string userName(){
+  string name;
+  cout << "Enter name: ";
+  getline(cin,name);
+  cout << endl;
+  return name;
+}
+
+float Amount(PERSON a[],int N,string name){
+  float amount;
+  for(int i = 0; i < N; i++){
+    if(a[i].cName == name.c_str()){
+      cout << "Amount: "
+      cin >> amount;
+      return amount;
+    }
+  }
+
+  cout << "Record not found" << endl;
+  return 0;
+}
+  
 
 int lines(){
   int num = 0;
@@ -59,9 +74,26 @@ int lines(){
       ++num;
   }
   myFile.close();
-
-  return num;
 }
+
+PERSON* readData(int N){
+  PERSON* p;
+  p = new PERSON[N];
+
+  string str1, str2,trash;
+  ifstream Data;
+  Data.open("data.txt");
+  for(int i = 0; i < N; ++i){
+    Data >> str1.substr(0,9) >> str2.substr(0,10) >> p[i] ;
+    getline(Data,trash);
+    string name = str1 + " " + str2;
+    strcpy(p[i].cName,name.c_str());
+  }
+  Data.close();
+
+  return p;
+}
+
 
 void Display(PERSON a[], int size){
 	cout << "Name" << setw(20) << "Balance" << endl;
@@ -81,28 +113,16 @@ void FindRichest(PERSON a[], int size){
     }
   }
 
-  cout << "The customer maximum balance is " << a[rich].cName << endl;
+  cout << "Highest balance" << a[rich].cName << endl;
 }
 
-void Deposit(string customer,PERSON a[],int size){
-  PERSON person[1];
-  float deposit;
-  int k = 0;
-  
-  strcpy(person[0].cName,customer.c_str());
-  
-  cout << person[0].cName << ", how much would you like to deposit? ";
-  cin >> deposit;
-  person[0].Balance =  deposit;
-  
-  for(; k < size; ++k){
-    if(person[0].cName == a[k].cName){
-      break;
+void Deposit(PERSON arr[],int N,string custName,float amount){
+  for(int i = 0; i < N; i++){
+    if(arr[i].cName == custName.c_str()){
+      arr[i].Balance += amount;
+      cout << "New Balance: " << arr[i].Balance << endl;
     }
   }
-
-  a[k].Balance +=  person[0].Balance;
-  cout << "Now your new balance is " << a[k].Balance <<  endl;
 }
 
 void NewCopy(string file, PERSON a[], int size){
