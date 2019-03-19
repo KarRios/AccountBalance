@@ -29,15 +29,15 @@ int main(){
   FindRichest(people,size);
 
   string cust = userName();
-  float amount = Amount(cust);
+  float amount = Amount(people,size,cust);
   Deposit(people,size,cust,amount);
   
   string name = userName();
-  float money = Amount(name);
+  float money = Amount(people,size,name);
   Deposit(people,size,name,money);
   
   FindRichest(people,size);
-  NewCopy("data.txt",people,N);
+  NewCopy("data.txt",people,size);
 
  return 0;
 }
@@ -54,7 +54,7 @@ float Amount(PERSON a[],int N,string name){
   float amount;
   for(int i = 0; i < N; i++){
     if(a[i].cName == name.c_str()){
-      cout << "Amount: "
+      cout << "Amount: ";
       cin >> amount;
       return amount;
     }
@@ -77,16 +77,15 @@ int lines(){
 }
 
 PERSON* readData(int N){
-  PERSON* p;
-  p = new PERSON[N];
-
+  PERSON* p = new PERSON[N];
+  
   string str1, str2,trash;
   ifstream Data;
   Data.open("data.txt");
   for(int i = 0; i < N; ++i){
-    Data >> str1 >> str2 >> p[i] ;
+    Data >> str1 >> str2 >> p[i].Balance ;
     getline(Data,trash);
-    string name = str1.substr(0,9) + " " + str2.substr(0,10);
+    string name = str1 + " " + str2;
     strcpy(p[i].cName,name.c_str());
   }
   Data.close();
