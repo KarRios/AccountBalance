@@ -14,10 +14,10 @@ struct PERSON{
   
 int lines();
 PERSON* readData(int N);
-void Display(PERSON a[], int size);
-void FindRichest(PERSON a[], int size);
+void Display(PERSON a[], int N);
+void FindRichest(PERSON a[], int N);
 void Deposit(PERSON arr[],int N,string custName,float amount);
-void NewCopy(string file,PERSON a[], int size);
+void NewCopy(string file,PERSON a[], int N);
 string userName();
 float Amount(PERSON a[],int N,string name);
 
@@ -84,9 +84,9 @@ PERSON* readData(int N){
   ifstream Data;
   Data.open("data.txt");
   for(int i = 0; i < N; ++i){
-    Data >> str1.substr(0,9) >> str2.substr(0,10) >> p[i] ;
+    Data >> str1 >> str2 >> p[i] ;
     getline(Data,trash);
-    string name = str1 + " " + str2;
+    string name = str1.substr(0,9) + " " + str2.substr(0,10);
     strcpy(p[i].cName,name.c_str());
   }
   Data.close();
@@ -95,18 +95,18 @@ PERSON* readData(int N){
 }
 
 
-void Display(PERSON a[], int size){
+void Display(PERSON a[], int N){
 	cout << "Name" << setw(20) << "Balance" << endl;
 	cout << "------------------------------" << endl;
-	for(int i = 0; i < size; ++i){
+	for(int i = 0; i < N; ++i){
 	  cout << a[i].cName << setw(10) << a[i].Balance  << endl;
 	}
 }
 
-void FindRichest(PERSON a[], int size){
+void FindRichest(PERSON a[], int N){
   int max = a[0].Balance;
   int rich = 0;
-  for(int j = 1; j < size; j++){
+  for(int j = 1; j < N; j++){
     if(a[j].Balance > max){
       max = a[j].Balance;
       rich = j;
@@ -125,13 +125,15 @@ void Deposit(PERSON arr[],int N,string custName,float amount){
   }
 }
 
-void NewCopy(string file, PERSON a[], int size){
+void NewCopy(string file, PERSON a[], int N){
   ofstream myfile;
   myfile.open(file);
-  for(int i = 0; i < size; i++){
+  for(int i = 0; i < N; i++){
 	myfile << a[i].cName << " " << a[i].Balance << "\n";
   }
    
   myfile.close();
+
+  cout << "File Updated..." << endl;
 }
 
