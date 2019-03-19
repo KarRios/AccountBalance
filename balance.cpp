@@ -21,26 +21,60 @@ void NewCopy(string file,PERSON a[], int N);
 string userName();
 float Amount(PERSON a[],int N,string name);
 
-int main(){
-  int size = lines();
-  PERSON* people = readData(size);
-
-  Display(people,size);
-  FindRichest(people,size);
-
-  string cust = userName();
-  float amount = Amount(people,size,cust);
-  Deposit(people,size,cust,amount);
-  
-  string name = userName();
-  float money = Amount(people,size,name);
-  Deposit(people,size,name,money);
-  
-  FindRichest(people,size);
-  NewCopy("data.txt",people,size);
-
- return 0;
+void printmenu() {
+    cout << "Please enter a choice:" << endl;
+    cout << "1. Display records"<< endl;
+    cout << "2. Deposit funds"<< endl;
+    cout << "3. Find Highest Balance" << endl;
+    cout << "4. Update records" << endl;
+    cout << "5. Exit the program" << endl;
 }
+
+int main()
+{
+    int size = lines();
+    PERSON* people = new PERSON[size];
+    people = readData(size);
+    
+    int choice;
+    do
+    {
+        printmenu();
+        cin >> choice;
+        switch(choice)
+        {
+            case 1:
+                Display(people,size);
+                break;
+
+            case 2:
+                string cust = userName();
+		float amount = Amount(people,size,cust);
+		Deposit(people,size,cust,amount);
+
+                break;
+
+            case 3:
+                FindRichest(people,size);
+                break;
+
+            case 4:
+                NewCopy("data.txt",people,size);
+                break;
+
+            case 5:
+                Display(people,size);
+                break;
+
+            default:
+                cout << "Invalid entry" << endl;
+                break;
+        }
+        cout << endl;
+   } while(choice != 5);
+      return 0;
+}
+
 
 string userName(){
   string name;
@@ -135,4 +169,6 @@ void NewCopy(string file, PERSON a[], int N){
 
   cout << "File Updated..." << endl;
 }
+
+
 
