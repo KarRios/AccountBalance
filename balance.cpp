@@ -33,8 +33,10 @@ void printmenu() {
 int main()
 {
     int size = lines();
-    PERSON* people = new PERSON[size];
+    PERSON* people;
     people = readData(size);
+    string cust;
+    float amount;
     
     int choice;
     do
@@ -48,10 +50,9 @@ int main()
                 break;
 
             case 2:
-                string cust = userName();
-		float amount = Amount(people,size,cust);
+                cust = userName();
+		amount = Amount(people,size,cust);
 		Deposit(people,size,cust,amount);
-
                 break;
 
             case 3:
@@ -79,6 +80,7 @@ int main()
 string userName(){
   string name;
   cout << "Enter name: ";
+  cin.get();
   getline(cin,name);
   cout << endl;
   return name;
@@ -86,8 +88,10 @@ string userName(){
 
 float Amount(PERSON a[],int N,string name){
   float amount;
+  char charName[20];
+  memcpy(charName,name.c_str(),name.size());
   for(int i = 0; i < N; i++){
-    if(a[i].cName == name.c_str()){
+    if(a[i].cName == charName){
       cout << "Amount: ";
       cin >> amount;
       return amount;
@@ -108,16 +112,18 @@ int lines(){
       ++num;
   }
   myFile.close();
+  return num;
 }
 
 PERSON* readData(int N){
-  PERSON* p = new PERSON[N];
+  PERSON* p;
+  p = new PERSON[N];
   
   string str1, str2,trash;
   ifstream Data;
   Data.open("data.txt");
-  for(int i = 0; i < N; ++i){
-    Data >> str1 >> str2 >> p[i].Balance ;
+  for(int i = 0; i < N;i++){
+    Data >> str1 >> str2 >> p[i].Balance;
     getline(Data,trash);
     string name = str1 + " " + str2;
     strcpy(p[i].cName,name.c_str());
@@ -129,11 +135,11 @@ PERSON* readData(int N){
 
 
 void Display(PERSON a[], int N){
-	cout << "Name" << setw(20) << "Balance" << endl;
-	cout << "------------------------------" << endl;
-	for(int i = 0; i < N; ++i){
-	  cout << a[i].cName << setw(10) << a[i].Balance  << endl;
-	}
+  cout << "Name" << setw(20) << "Balance" << endl;
+  cout << "------------------------------" << endl;
+  for(int i = 0; i < N; ++i){
+    cout << a[i].cName << setw(10) << a[i].Balance  << endl;
+  }
 }
 
 void FindRichest(PERSON a[], int N){
@@ -146,7 +152,7 @@ void FindRichest(PERSON a[], int N){
     }
   }
 
-  cout << "Highest balance" << a[rich].cName << endl;
+  cout << "Highest balance: " << a[rich].cName << endl;
 }
 
 void Deposit(PERSON arr[],int N,string custName,float amount){
