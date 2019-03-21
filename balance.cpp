@@ -131,6 +131,9 @@ PERSON* readData(int N){
   Data.close();
 
   return p;
+
+  delete p;
+  p = NULL;
 }
 
 
